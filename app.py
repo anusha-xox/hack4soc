@@ -13,7 +13,7 @@ from login import LoginForm, StudentForm, Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
-
+from nlp import solve
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
