@@ -2,38 +2,24 @@
 <div id="main">
 						<div class="inner">
 							<header>
-								<h1>Results
+								<h1>Questions
 								</h1>
                                 {% if result==true %}
-								<article class="style1">
-									<span class="image">
-										<img  width="200" height="300" src="static/images/pic07.jpg" alt="" />
-									</span>
 
-										<h2>Congratulation</h2>
-
-										<div class="content">
-											<p>Congratulations you have passed the test. You can now move to the next level. </p>
-
-											</div>
-									</a>
-								</article>
-
-								 {% else %}
-                                <article class="style1">
-									<span class="image">
-										<img  width="200" height="300" src="static/images/pic08.jpg" alt="" />
-									</span>
-
-										<h2>Sorry</h2>
-
-										<div class="content">
-											<p>Sorry you haven't passed the test. Please try again after reading the book again. </p>
-
-											</div>
-									</a>
-								</article>
+								 <p>Congratulations you have passed the test. You have now move to the next level. </p>
+                                {% else %}
+                                <p>Sorry, you haven't scored the required marks.Please read the books again and attempt the test again.</p>
 								{% endif %}
+								<h3>Scores</h3>
+									<div class="table-wrapper">
+										<table class="alt">
+											{%for i in scores:%}
+											<tr>
+												<td>{{i[0]}}</td>
+												<td>{{i[1]}}</td>
+											</tr>
+											{%endfor%}
+										</table>
 							</header>
 						</div>
 </div>
