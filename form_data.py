@@ -24,7 +24,7 @@ class StudentForm(FlaskForm):
     current_book=StringField(label='Current Book Borrowed', validators=[DataRequired()])
     past_books=StringField(label='Past books', validators=[DataRequired()])
     volunteer_email=StringField(label='Volunteer Email', validators=[DataRequired()])
-    submit = SubmitField(label='Login')
+    submit = SubmitField(label='Add Student')
 
 class Evaluate(FlaskForm):
       name=StringField(label="Your Name", validators=[DataRequired()])

@@ -1,62 +1,10 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% include "header.html" %}
-<!--<div id="wrapper">-->
-<!--<section>-->
-<!--    <form method="post" role="form">-->
-<!--            -->
-<!--    </form>-->
-<!--</section>-->
-<!--</div>-->
-
-<html>
-	<head>
-		<title>Library Management</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="static/assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="static/assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Header -->
-					<header id="header">
-						<div class="inner">
-
-							<!-- Logo -->
-								<a href="index.html" class="logo">
-									<span class="symbol"><img src="static/images/logo.svg" alt="" /></span><span class="title">Volunteer </span>
-								</a>
-
-							<!-- Nav -->
-								<nav>
-									<ul>
-										<li><a href="#menu">Menu</a></li>
-									</ul>
-								</nav>
-
-						</div>
-					</header>
-                <!-- Menu -->
-					<nav id="menu">
-						<h2>Menu</h2>
-						<ul>
-							<li><a href="index.html">Home</a></li>
-
-							<li><a href="generic.html">About</a></li>
-							<li><a href="generic.html">Leaderboard</a></li>
-							<li><a href="elements.html">Logout</a></li>
-						</ul>
-					</nav>
-                <div id="main">
-						<div class="inner">
-							<header>
-								<h1>Library Management
-								</h1>
-                                <br>
-								<h2>Login Page</h2>
-								<p> </p>
-							</header>
-                            <p> {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "btn btn-primary text-uppercase"}) }}</p>
+<div id="main">
+	<div class="inner">
+		<header>
+			<h1>{{heading}}</h1>
+			<br>
+		</header>
+		<p> {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "btn btn-primary text-uppercase"}) }}</p>
 {% include "footer.html" %}

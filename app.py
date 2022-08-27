@@ -9,7 +9,7 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 import bleach
 import smtplib
-from login import LoginForm, StudentForm, Evaluate
+from form_data import LoginForm, StudentForm, Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
@@ -22,8 +22,6 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 global type_barcode
 global data_barcode
-
-
 
 
 def draw_barcode(decoded, image):
@@ -85,6 +83,7 @@ class Students(db.Model):
     past_books = db.Column(db.String(2500), nullable=True)
     volunteer_email = db.Column(db.String(250), nullable=False)
 
+
 # db.create_all()
 
 #
@@ -92,7 +91,6 @@ class Students(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     first_name = db.Column(db.String(250), unique=True, nullable=False)  # string
 #     last_name = db.Column(db.String(250), nullable=False)  # string
-
 
 
 # new_student = Students(
@@ -143,7 +141,6 @@ def elements():
 
 @app.route('/books')
 def books():
-
     # books=
     return render_template('books.html', )
 
@@ -180,9 +177,9 @@ def evaluate():
 
     if evaluate_form.validate_on_submit():
         global student_answer
-        student_answer= evaluate_form.answer.data
+        student_answer = evaluate_form.answer.data
         global ret
-        ret=solve(student_answer, "Hardcoded text")
+        ret = solve(student_answer, "Hardcoded text")
         return render_template('test_result.html', result=ret)
 
     return render_template('evaluate.html', form=evaluate_form)
@@ -210,9 +207,28 @@ def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/add_student')
+@app.route('/add_student', methods=["GET", "POST"])
 def add_student():
-    return render_template('add_student.html')
+    form = StudentForm()
+    if form.validate_on_submit():
+        new_student = Students(
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            grade=form.grade.data,
+            age=form.age.data,
+            level_assigned=form.level_assigned.data,
+            img_url=form.img_url.data,
+            total_points=form.total_points.data,
+            badge=form.badge.data,
+            no_of_writeups=form.no_of_writeups.data,
+            current_book=form.current_book.data,
+            past_books=form.past_books.data,
+            volunteer_email=form.volunteer_email.data
+        )
+        db.session.add(new_student)
+        db.session.commit()
+        return redirect(url_for('view_students'))
+    return render_template('add_student.html', heading="Add Student", form=form)
 
 
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
@@ -226,5 +242,3 @@ def individual_students(index):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
