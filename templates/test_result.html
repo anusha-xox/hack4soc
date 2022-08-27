@@ -1,0 +1,16 @@
+{% include "header.html" %}
+<div id="main">
+						<div class="inner">
+							<header>
+								<h1>Questions
+								</h1>
+                                {% if result==true %}
+
+								 <p>Congratulations you have passed the test. You have now move to the next level. </p>
+                                {% else %}
+                                <p>Sorry, you haven't scored the required marks.Please read the books again and attempt the test again.</p>
+							</header>
+						</div>
+</div>
+
+{% include "footer.html" %}
