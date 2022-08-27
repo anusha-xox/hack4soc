@@ -9,7 +9,7 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 import bleach
 import smtplib
-from login import LoginForm
+from login import LoginForm, StudentForm, Question, Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
@@ -22,6 +22,8 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 global type_barcode
 global data_barcode
+
+
 
 
 def draw_barcode(decoded, image):
@@ -83,8 +85,15 @@ class Students(db.Model):
     past_books = db.Column(db.String(2500), nullable=True)
     volunteer_email = db.Column(db.String(250), nullable=False)
 
-
 # db.create_all()
+
+#
+# class Progress(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     first_name = db.Column(db.String(250), unique=True, nullable=False)  # string
+#     last_name = db.Column(db.String(250), nullable=False)  # string
+
+
 
 # new_student = Students(
 #     first_name="B.",
@@ -134,7 +143,9 @@ def elements():
 
 @app.route('/books')
 def books():
-    return render_template('books.html')
+
+    # books=
+    return render_template('books.html', )
 
 
 @app.route('/level1')
@@ -163,6 +174,27 @@ def barcode_reader():
     return render_template('barcode.html')
 
 
+@app.route('/evaluate', methods=["GET", "POST"])
+def evaluate():
+    evaluate_form = Evaluate()
+
+    if evaluate_form.validate_on_submit():
+        if evaluate_form.grade.data == '1' and evaluate_form.level.data == '1' and evaluate_form.subject.data=="math":
+            return render_template('questions.html')
+
+    return render_template('evaluate.html', form=evaluate_form)
+
+
+@app.route('/questions', methods=["GET", "POST"])
+def questions():
+    question_form = Question()
+
+    if question_form.validate_on_submit():
+        return render_template('index.html')
+
+    return render_template('questions.html', form=question_form)
+
+
 @app.route('/display_barcode')
 def display_barcode():
     return render_template('display_barcode.html', type1=type_barcode, data1=data_barcode)
@@ -171,6 +203,9 @@ def display_barcode():
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+
 
 
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
@@ -184,3 +219,5 @@ def individual_students(index):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+

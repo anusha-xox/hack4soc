@@ -13,6 +13,8 @@
                             <h2>
 
                             </h2>
+                          {% for book in books %}
+                          {% if book.genre== "mathematics" %}
                             <article class="style1">
                                 <span class="image">
 									<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -37,7 +39,7 @@
   </button>
                                         </span>
 </div>
-
+                 {% if book.genre== "science" %}
 								</article>
 
 
@@ -65,7 +67,7 @@
   </button>
                                         </span>
 </div>
-
+            {% if book.genre== "" %}
 								</article>
 
 
