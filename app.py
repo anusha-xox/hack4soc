@@ -29,11 +29,12 @@ def draw_barcode(decoded, image):
                           thickness=5)
     return image
 
+
 def gen():
     camera = cv2.VideoCapture(0)
 
     while True:
-        success, frame=camera.read()
+        success, frame = camera.read()
         if not success:
             break
         else:
@@ -47,19 +48,16 @@ def gen():
                 type_barcode = obj.type
                 data_barcode = obj.data
 
-
-
-
                 # print barcode type & data
                 print("Type:", obj.type)
                 print("Data:", obj.data)
                 print()
 
-
-            ret, buffer=cv2.imencode(".jpg", frame)
-            frame=buffer.tobytes()
+            ret, buffer = cv2.imencode(".jpg", frame)
+            frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
 
 #### DATABASE FOR STUDENTS ON SQLALCHEMY ####
 
@@ -158,10 +156,8 @@ def view_students():
     return render_template("view_students.html", all_students=all_students)
 
 
-
 @app.route('/barcode_reader')
 def barcode_reader():
-
     return render_template('barcode.html')
 
 
@@ -173,7 +169,6 @@ def display_barcode():
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
 
 
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
