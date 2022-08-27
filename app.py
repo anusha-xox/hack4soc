@@ -201,7 +201,7 @@ def evaluate():
         global student_answer
         student_answer = evaluate_form.answer.data
         global ret
-        ret = solve(student_answer, "Hardcoded text")
+        ret,lis=solve(student_answer, "Hardcoded text")
         name = evaluate_form.name.data
         grade = evaluate_form.grade.data
         level = evaluate_form.level.data
@@ -213,7 +213,7 @@ def evaluate():
         e = Evaluation()
         e.add_new(student_id, name, grade, level, subject, question, answer)
 
-        return render_template('test_result.html', result=ret)
+        return render_template('test_result.html', result=ret,scores=lis)
 
     return render_template('evaluate.html', form=evaluate_form)
 
