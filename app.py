@@ -6,12 +6,14 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
 import datetime
+from flask_sqlalchemy import SQLAlchemy
 import bleach
 import smtplib
 from login import LoginForm
 from pyzbar import pyzbar
 import cv2
-from barcode import Barcode
+from sqlalchemy import Column, Integer, String
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
