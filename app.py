@@ -13,7 +13,7 @@ from login import LoginForm, StudentForm, Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
-
+from nlp import solve
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -181,7 +181,9 @@ def evaluate():
     if evaluate_form.validate_on_submit():
         global student_answer
         student_answer= evaluate_form.answer.data
-        return render_template('index.html')
+        global ret
+        ret=solve(student_answer, "Hardcoded text")
+        return render_template('test_result.html', result=ret)
 
     return render_template('evaluate.html', form=evaluate_form)
 
