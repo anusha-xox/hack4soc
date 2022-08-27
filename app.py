@@ -24,15 +24,28 @@ def login():
     if login_form.validate_on_submit():
         if login_form.username.data == 'admin' and login_form.password.data == 'ab':
 
-            return render_template('index.html')
+            return render_template('index1.html')
 
     return render_template('login.html', form=login_form)
 
 
 @app.route('/home')
 def home():
-    return render_template("index.html")
+    return render_template("index1.html")
 
+<<<<<<< HEAD
+=======
+
+@app.route('/generic')
+def generic():
+    return render_template("generic.html")
+
+
+@app.route('/elements')
+def elements():
+    return render_template("elements.html")
+
+>>>>>>> origin/master
 
 if __name__ == "__main__":
     app.run(debug=True)
