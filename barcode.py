@@ -46,6 +46,3 @@ class Barcode:
         cam.release()
         cv2.destroyAllWindows()
 
-
-b = Barcode()
-b.initiate()

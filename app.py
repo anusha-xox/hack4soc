@@ -9,6 +9,9 @@ import datetime
 import bleach
 import smtplib
 from login import LoginForm
+from pyzbar import pyzbar
+import cv2
+from barcode import Barcode
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -23,7 +26,6 @@ def login():
 
     if login_form.validate_on_submit():
         if login_form.username.data == 'admin' and login_form.password.data == 'ab':
-
             return render_template('index1.html')
 
     return render_template('login.html', form=login_form)
@@ -48,6 +50,15 @@ def elements():
 def books():
     return render_template('books.html')
 
+
+@app.route('/view-students')
+def view_students():
+    return render_template("view_students.html")
+
+@app.route('/barcode-reader')
+def barcode_reader():
+    b = Barcode()
+    b.initiate()
 
 if __name__ == "__main__":
     app.run(debug=True)
