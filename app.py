@@ -49,7 +49,8 @@ def gen():
                 global type_barcode
                 type_barcode = obj.type
                 data_barcode = obj.data
-
+                str1 = obj.data.decode('UTF-8') 
+                data_barcode = str1
                 # print barcode type & data
                 print("Type:", obj.type)
                 print("Data:", obj.data)
