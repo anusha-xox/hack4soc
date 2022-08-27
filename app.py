@@ -83,27 +83,30 @@ class Students(db.Model):
     past_books = db.Column(db.String(2500), nullable=True)
     volunteer_email = db.Column(db.String(250), nullable=False)
 
-db.create_all()
+# db.create_all()
+
+
 class Evaluation(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
-    student_id=db.Column(db.String, nullable=False)
-    name=db.Column(db.String(250), nullable=False)
-    grade=db.Column(db.String, nullable=False)
-    level=db.Column(db.Integer, nullable=False)
-    subject=db.Column(db.String, nullable=False)
-    question=db.Column(db.String, nullable=False)
-    answer=db.Column(db.String, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(250), nullable=False)
+    grade = db.Column(db.String, nullable=False)
+    level = db.Column(db.Integer, nullable=False)
+    subject = db.Column(db.String, nullable=False)
+    question = db.Column(db.String, nullable=False)
+    answer = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         return f'{self.id}'
 
     def add_new(self, student_id, name, grade, level, subject, question, answer):
-        new_eval= Evaluation(student_id=student_id, name=name, grade=grade,
-                           level=level, subject=subject, question=question, answer=answer)
-
+        new_eval = Evaluation(student_id=student_id, name=name, grade=grade,
+                              level=level, subject=subject, question=question, answer=answer)
 
         db.session.add(new_eval)
         db.session.commit()
+
+
 #
 # class Progress(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -195,18 +198,18 @@ def evaluate():
 
     if evaluate_form.validate_on_submit():
         global student_answer
-        student_answer= evaluate_form.answer.data
+        student_answer = evaluate_form.answer.data
         global ret
-        ret=solve(student_answer, "Hardcoded text")
-        name=evaluate_form.name.data
-        grade=evaluate_form.grade.data
-        level=evaluate_form.level.data
-        student_id=evaluate_form.student_id.data
-        question=evaluate_form.question.data
-        answer =evaluate_form.answer.data
-        subject=evaluate_form.subject.data
+        ret = solve(student_answer, "Hardcoded text")
+        name = evaluate_form.name.data
+        grade = evaluate_form.grade.data
+        level = evaluate_form.level.data
+        student_id = evaluate_form.student_id.data
+        question = evaluate_form.question.data
+        answer = evaluate_form.answer.data
+        subject = evaluate_form.subject.data
 
-        e=Evaluation()
+        e = Evaluation()
         e.add_new(student_id, name, grade, level, subject, question, answer)
 
         return render_template('test_result.html', result=ret)
@@ -260,6 +263,42 @@ def add_student():
     return render_template('add_student.html', heading="Add Student", form=form)
 
 
+@app.route('/edit-student/<int:index>', methods=["GET", "POST"])
+def edit_student(index):
+    student_found = Students.query.get(index)
+    if student_found:
+        edit_form = StudentForm(
+            first_name=student_found.first_name,
+            last_name=student_found.last_name,
+            grade=student_found.grade,
+            age=student_found.age,
+            level_assigned=student_found.level_assigned,
+            img_url=student_found.img_url,
+            total_points=student_found.total_points,
+            badge=student_found.badge,
+            no_of_writeups=student_found.no_of_writeups,
+            current_book=student_found.current_book,
+            past_books=student_found.past_books,
+            volunteer_email=student_found.volunteer_email
+        )
+        if edit_form.validate_on_submit():
+            student_found.first_name = edit_form.first_name.data
+            student_found.last_name = edit_form.last_name.data
+            student_found.grade = edit_form.grade.data
+            student_found.age = edit_form.age.data
+            student_found.level_assigned = edit_form.level_assigned.data
+            student_found.img_url = edit_form.img_url.data
+            student_found.total_points = edit_form.total_points.data
+            student_found.badge = edit_form.badge.data
+            student_found.no_of_writeups = edit_form.no_of_writeups.data
+            student_found.current_book = edit_form.current_book.data
+            student_found.past_books = edit_form.past_books.data
+            student_found.volunteer_email = edit_form.volunteer_email.data
+            db.session.commit()
+            return redirect(url_for('view_students'))
+        return render_template('add_student.html', heading="Edit Student", form=edit_form)
+
+
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
 def individual_students(index):
     view_student = Students.query.get(index)
@@ -271,3 +310,4 @@ def individual_students(index):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
