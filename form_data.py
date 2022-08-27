@@ -27,6 +27,7 @@ class StudentForm(FlaskForm):
     submit = SubmitField(label='Add Student')
 
 class Evaluate(FlaskForm):
+      student_id=StringField(label='Your student ID', validators=[DataRequired()])
       name=StringField(label="Your Name", validators=[DataRequired()])
       grade=StringField(label="Your Grade", validators=[DataRequired()])
       level=StringField(label='The level for which you want to give the assessment', validators=[DataRequired()])

@@ -83,9 +83,27 @@ class Students(db.Model):
     past_books = db.Column(db.String(2500), nullable=True)
     volunteer_email = db.Column(db.String(250), nullable=False)
 
+db.create_all()
+class Evaluation(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    student_id=db.Column(db.String, nullable=False)
+    name=db.Column(db.String(250), nullable=False)
+    grade=db.Column(db.String, nullable=False)
+    level=db.Column(db.Integer, nullable=False)
+    subject=db.Column(db.String, nullable=False)
+    question=db.Column(db.String, nullable=False)
+    answer=db.Column(db.String, nullable=False)
 
-# db.create_all()
+    def __repr__(self):
+        return f'{self.id}'
 
+    def add_new(self, student_id, name, grade, level, subject, question, answer):
+        new_eval= Evaluation(student_id=student_id, name=name, grade=grade,
+                           level=level, subject=subject, question=question, answer=answer)
+
+
+        db.session.add(new_eval)
+        db.session.commit()
 #
 # class Progress(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -177,9 +195,20 @@ def evaluate():
 
     if evaluate_form.validate_on_submit():
         global student_answer
-        student_answer = evaluate_form.answer.data
+        student_answer= evaluate_form.answer.data
         global ret
-        ret = solve(student_answer, "Hardcoded text")
+        ret=solve(student_answer, "Hardcoded text")
+        name=evaluate_form.name.data
+        grade=evaluate_form.grade.data
+        level=evaluate_form.level.data
+        student_id=evaluate_form.student_id.data
+        question=evaluate_form.question.data
+        answer =evaluate_form.answer.data
+        subject=evaluate_form.subject.data
+
+        e=Evaluation()
+        e.add_new(student_id, name, grade, level, subject, question, answer)
+
         return render_template('test_result.html', result=ret)
 
     return render_template('evaluate.html', form=evaluate_form)
