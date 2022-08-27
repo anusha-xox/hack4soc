@@ -13,7 +13,6 @@ from login import LoginForm, StudentForm, Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
-from nlp import solve
 
 
 app = Flask(__name__)
@@ -86,9 +85,8 @@ class Students(db.Model):
     past_books = db.Column(db.String(2500), nullable=True)
     volunteer_email = db.Column(db.String(250), nullable=False)
 
-#  db.create_all()
-# class BooksAll(db.Model):
-#     pass
+# db.create_all()
+
 #
 # class Progress(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
@@ -183,8 +181,6 @@ def evaluate():
     if evaluate_form.validate_on_submit():
         global student_answer
         student_answer= evaluate_form.answer.data
-        global ret
-        ret=solve(student_answer, "Hardcoded Text")
         return render_template('index.html')
 
     return render_template('evaluate.html', form=evaluate_form)
