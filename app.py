@@ -14,7 +14,6 @@ from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 app.config['CKEDITOR_PKG_TYPE'] = 'full-all'
@@ -105,6 +104,21 @@ class Students(db.Model):
 
 #### END OF DATABASE STUFF ####
 
+class StudentForm(FlaskForm):
+    first_name = StringField(label='First Name', validators=[DataRequired()])
+    last_name = StringField(label='Last Name', validators=[DataRequired()])
+    grade = StringField(label='Grade', validators=[DataRequired()])
+    age = StringField(label='Age', validators=[DataRequired()])
+    level_assigned = StringField(label='Level', validators=[DataRequired()])
+    img_url = StringField(label='Img Url', validators=[DataRequired()])
+    total_points = StringField(label='Total Points', validators=[DataRequired()])
+    badge = StringField(label='Badge', validators=[DataRequired()])
+    no_of_writeups = StringField(label='No of Writeups', validators=[DataRequired()])
+    current_book = StringField(label='Current Book Borrowed', validators=[DataRequired()])
+    past_books = StringField(label='Past books', validators=[DataRequired()])
+    volunteer_email = StringField(label='Volunteer Email', validators=[DataRequired()])
+    submit = SubmitField("Add Student")
+
 
 @app.route('/', methods=["GET", "POST"])
 def login():
@@ -171,6 +185,29 @@ def display_barcode():
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route("/add-students", methods=["GET", "POST"])
+def add_student():
+    form = StudentForm()
+    if form.validate_on_submit():
+        new_student = Students(
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            grade=form.grade.data,
+            age=form.age.data,
+            level_assigned=form.level_assigned.data,
+            total_points=form.total_points.data,
+            badge=form.badge.data,
+            no_of_writeups=form.no_of_writeups.data,
+            current_book=form.current_book.data,
+            past_books=form.past_books.data,
+            volunteer_email=form.volunteer_email.data
+        )
+        db.session.add(new_student)
+        db.session.commit()
+        return redirect(url_for('view_students'))
+    return render_template("add_student.html", form=form)
 
 
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
