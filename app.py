@@ -9,7 +9,7 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 import bleach
 import smtplib
-from login import LoginForm, StudentForm, Question, Evaluate
+from login import LoginForm, StudentForm,  Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
@@ -179,20 +179,23 @@ def evaluate():
     evaluate_form = Evaluate()
 
     if evaluate_form.validate_on_submit():
-        if evaluate_form.grade.data == '1' and evaluate_form.level.data == '1' and evaluate_form.subject.data=="math":
-            return render_template('questions.html')
+        global student_answer
+        student_answer= evaluate_form.answer.data
+        return render_template('index.html')
 
     return render_template('evaluate.html', form=evaluate_form)
 
 
-@app.route('/questions', methods=["GET", "POST"])
-def questions():
-    question_form = Question()
-
-    if question_form.validate_on_submit():
-        return render_template('index.html')
-
-    return render_template('questions.html', form=question_form)
+# @app.route('/questions', methods=["GET", "POST"])
+# def questions():
+#     question_form = Question()
+#
+#     if question_form.validate_on_submit():
+#         global student_answer
+#         student_answer= question_form.answer.data
+#         return render_template('index.html')
+#
+#     return render_template('questions.html', form=question_form)
 
 
 @app.route('/display_barcode')
@@ -205,7 +208,9 @@ def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-
+@app.route('/add_student')
+def add_student():
+    return render_template('add_student.html')
 
 
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])

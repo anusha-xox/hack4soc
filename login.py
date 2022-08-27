@@ -24,3 +24,18 @@ class StudentForm(FlaskForm):
     current_book=StringField(label='Current Book Borrowed', validators=[DataRequired()])
     past_books=StringField(label='Past books', validators=[DataRequired()])
     volunteer_email=StringField(label='Volunteer Email', validators=[DataRequired()])
+    submit = SubmitField(label='Login')
+
+class Evaluate(FlaskForm):
+      name=StringField(label="Your Name", validators=[DataRequired()])
+      grade=StringField(label="Your Grade", validators=[DataRequired()])
+      level=StringField(label='The level for which you want to give the assessment', validators=[DataRequired()])
+      subject=StringField(label='The subject', validators=[DataRequired()])
+      question = StringField(label="your question", validators=[DataRequired()])
+      answer = StringField(label="Type your answer here", validators=[DataRequired()])
+      submit = SubmitField(label='Login')
+
+# class Question(FlaskForm):
+#     question=StringField(label="your question", validators=[DataRequired()])
+#     answer=StringField(label="Type your answer here", validators=[DataRequired()])
+#     submit = SubmitField(label='Login')
