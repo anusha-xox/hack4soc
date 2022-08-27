@@ -37,12 +37,15 @@ class Barcode:
         while ret:
             # load the image to opencv
             ret, img = cam.read()
-            if cv2.waitKey(1) == ord('q'):
-                img = self.decode(img)
+
+            img = self.decode(img)
             # show the image
-            cv2.imshow("img", img)
-            if cv2.waitKey(1) & 0xFF == 27:
+
+            # if cv2.waitKey(1) & 0xFF == 27:
+            #     break
+            if cv2.waitKey(5000):
                 break
+
         cam.release()
         cv2.destroyAllWindows()
 
