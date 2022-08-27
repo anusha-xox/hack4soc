@@ -9,7 +9,7 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 import bleach
 import smtplib
-from login import LoginForm, StudentForm,  Evaluate
+from login import LoginForm, StudentForm, Evaluate
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String

@@ -33,7 +33,7 @@ class Evaluate(FlaskForm):
       subject=StringField(label='The subject', validators=[DataRequired()])
       question = StringField(label="your question", validators=[DataRequired()])
       answer = StringField(label="Type your answer here", validators=[DataRequired()])
-      submit = SubmitField(label='Login')
+      submit = SubmitField(label='Submit')
 
 # class Question(FlaskForm):
 #     question=StringField(label="your question", validators=[DataRequired()])
