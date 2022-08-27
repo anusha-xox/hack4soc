@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, Response
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -18,6 +18,48 @@ app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 app.config['CKEDITOR_PKG_TYPE'] = 'full-all'
 ckeditor = CKEditor(app)
 Bootstrap(app)
+global type_barcode
+global data_barcode
+
+
+def draw_barcode(decoded, image):
+    image = cv2.rectangle(image, (decoded.rect.left, decoded.rect.top),
+                          (decoded.rect.left + decoded.rect.width, decoded.rect.top + decoded.rect.height),
+                          color=(0, 255, 0),
+                          thickness=5)
+    return image
+
+def gen():
+    camera = cv2.VideoCapture(0)
+
+    while True:
+        success, frame=camera.read()
+        if not success:
+            break
+        else:
+            decoded_objects = pyzbar.decode(frame)
+            for obj in decoded_objects:
+                # draw the barcode
+                print("detected barcode:", obj)
+                image = draw_barcode(obj, frame)
+                global data_barcode
+                global type_barcode
+                type_barcode = obj.type
+                data_barcode = obj.data
+
+
+
+
+                # print barcode type & data
+                print("Type:", obj.type)
+                print("Data:", obj.data)
+                print()
+
+
+            ret, buffer=cv2.imencode(".jpg", frame)
+            frame=buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 #### DATABASE FOR STUDENTS ON SQLALCHEMY ####
 
@@ -116,10 +158,22 @@ def view_students():
     return render_template("view_students.html", all_students=all_students)
 
 
-@app.route('/barcode-reader')
+
+@app.route('/barcode_reader')
 def barcode_reader():
-    b = Barcode()
-    b.initiate()
+
+    return render_template('barcode.html')
+
+
+@app.route('/display_barcode')
+def display_barcode():
+    return render_template('display_barcode.html', type1=type_barcode, data1=data_barcode)
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
