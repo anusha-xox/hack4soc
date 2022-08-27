@@ -84,4 +84,4 @@ def solve(text, evaluation_text):
     else:
         quiz_results = False
 
-    return quiz_results
+    return quiz_results,[["Similarity score",str(int(similarity*100))+"%"],["Verbs matched",verb_score],["Nouns matched",noun_score],["Adjectives matched",adj_score],["Proverbs matched",pro_score],["Adpositions matched",adp_score],["Symbols matched",sym_score],["Numbers matched",num_score]]
