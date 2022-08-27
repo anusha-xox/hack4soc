@@ -1,3 +1,5 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
 <!DOCTYPE HTML>
 <!--
 	Phantom by HTML5 UP
@@ -22,7 +24,7 @@
 
 							<!-- Logo -->
 								<a href="index.html" class="logo">
-									<span class="symbol"><img src="static/images/logo.svg" alt="" /></span><span class="title">Volunteer</span>
+									<span class="symbol"><img src="static/images/logo.svg" alt="" /></span><span class="title">Volunteer </span>
 								</a>
 
 							<!-- Nav -->
@@ -34,8 +36,7 @@
 
 						</div>
 					</header>
-
-				<!-- Menu -->
+                <!-- Menu -->
 					<nav id="menu">
 						<h2>Menu</h2>
 						<ul>
@@ -46,54 +47,19 @@
 							<li><a href="elements.html">Logout</a></li>
 						</ul>
 					</nav>
-
-				<!-- Main -->
-					<div id="main">
+                <div id="main">
 						<div class="inner">
 							<header>
 								<h1>Library Management
 								</h1>
+                                <br>
+								<h2>Login Page</h2>
 								<p> </p>
 							</header>
-							<section class="tiles">
-								<article class="style1">
-									<span class="image">
-										<img  width="200" height="300" src="static/images/pic01.jpg" alt="" />
-									</span>
-									<a href="generic.html">
-										<h2>View Student Details</h2>
-										<div class="content">
-											</div>
-									</a>
-								</article>
-								<article class="style2">
-									<span class="image">
-										<img  width="200" height="300" src="static/images/pic02.jpg" alt="" />
-									</span>
-									<a href="generic.html">
-										<h2>Add Student</h2>
-										<div class="content">
+                            <p> {{ wtf.quick_form(form) }}</p>
 
-										</div>
-									</a>
-								</article>
-								<article class="style3">
-									<span class="image">
-										<img  width="200" height="300"  src="static/images/pic03.jpg" alt="" />
-									</span>
-									<a href="generic.html">
-										<h2>Help</h2>
-										<div class="content">
 
-										</div>
-									</a>
-								</article>
-
-							</section>
-						</div>
-					</div>
-
-				<!-- Footer -->
+                            <!-- Footer -->
 					<footer id="footer">
 						<div class="inner">
 							<section>
