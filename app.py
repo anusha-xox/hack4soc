@@ -33,8 +33,6 @@ def login():
 def home():
     return render_template("index1.html")
 
-<<<<<<< HEAD
-=======
 
 @app.route('/generic')
 def generic():
@@ -44,8 +42,6 @@ def generic():
 @app.route('/elements')
 def elements():
     return render_template("elements.html")
-
->>>>>>> origin/master
 
 if __name__ == "__main__":
     app.run(debug=True)
