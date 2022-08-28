@@ -164,7 +164,7 @@ def elements():
 @app.route('/books')
 def books():
     # books=
-    return render_template('books.html', )
+    return render_template('books.html')
 
 
 @app.route('/level1')

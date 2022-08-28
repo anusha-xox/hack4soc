@@ -20,7 +20,7 @@
 									<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img width="300" height="400" src="static/images/book1.jpg" class="d-block w-100" alt="...">
+      <img width="300" height="400" src="static/images/pic01.jpg" class="d-block w-100" alt="...">
     </div>
     <div class="carousel-item">
       <img src="..." class="d-block w-100" alt="...">
@@ -39,7 +39,7 @@
   </button>
                                         </span>
 </div>
-                 {% if book.genre== "science" %}
+                 {% elif book.genre== "science" %}
 								</article>
 
 
@@ -67,7 +67,7 @@
   </button>
                                         </span>
 </div>
-            {% if book.genre== "" %}
+            {% elif book.genre== "" %}
 								</article>
 
 
@@ -95,7 +95,9 @@
     <span class="visually-hidden">Next</span>
   </button>
                                         </span>
-</div>
+    {% endif %}
+</div>{% endfor %}
+
 
 								</article>
 
