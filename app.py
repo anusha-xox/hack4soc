@@ -14,6 +14,7 @@ from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
 from nlp import solve
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -125,7 +126,7 @@ class Evaluation(db.Model):
         db.session.commit()
 
 
-#
+
 # class Progress(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     first_name = db.Column(db.String(250), unique=True, nullable=False)  # string
@@ -280,6 +281,11 @@ def add_student():
         return redirect(url_for('view_students'))
     return render_template('add_student.html', heading="Add Student", form=form)
 
+@app.route('/leaderboard')
+def leaderboard():
+    s=Students()
+    students_top=Students.query.filter_by(func.max(s.total_points)).all()
+    return render_template('leaderboard.html', students_top=students_top)
 
 @app.route('/edit-student/<int:index>', methods=["GET", "POST"])
 def edit_student(index):
