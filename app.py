@@ -284,8 +284,14 @@ def add_student():
 @app.route('/leaderboard')
 def leaderboard():
     s=Students()
-    students_top=Students.query.filter_by(func.max(s.total_points)).all()
+    students_top=Students.query.all()
     return render_template('leaderboard.html', students_top=students_top)
+
+
+@app.route('/about_us')
+def about_us():
+    return render_template('about.html')
+
 
 @app.route('/edit-student/<int:index>', methods=["GET", "POST"])
 def edit_student(index):
