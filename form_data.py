@@ -37,6 +37,18 @@ class Evaluate(FlaskForm):
     answer = StringField(label="Type your answer here", validators=[DataRequired()])
     submit = SubmitField(label='Submit')
 
+
+class AddBook(FlaskForm):
+    isbn = StringField(label='Bar Code Number Obtained', validators=[DataRequired()])
+    title = StringField(label="Title Of the Book", validators=[DataRequired()])
+    genre = StringField(label="Genre", validators=[DataRequired()])
+    level = StringField(label="Level Assigned", validators=[DataRequired()])
+    rating = StringField(label="Rating Given", validators=[DataRequired()])
+    reads = StringField(label="Reads Obtained", validators=[DataRequired()])
+    age_group = StringField(label="Min. Age Requirement", validators=[DataRequired()])
+    image = StringField(label="Image Url (if Available)")
+    submit = SubmitField(label='Add Book')
+
 # class Question(FlaskForm):
 #     question=StringField(label="your question", validators=[DataRequired()])
 #     answer=StringField(label="Type your answer here", validators=[DataRequired()])

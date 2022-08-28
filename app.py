@@ -9,7 +9,7 @@ import datetime
 from flask_sqlalchemy import SQLAlchemy
 import bleach
 import smtplib
-from form_data import LoginForm, StudentForm, Evaluate
+from form_data import LoginForm, StudentForm, Evaluate, AddBook
 from pyzbar import pyzbar
 import cv2
 from sqlalchemy import Column, Integer, String
@@ -49,7 +49,7 @@ def gen():
                 global type_barcode
                 type_barcode = obj.type
                 data_barcode = obj.data
-                str1 = obj.data.decode('UTF-8') 
+                str1 = obj.data.decode('UTF-8')
                 data_barcode = str1
                 # print barcode type & data
                 print("Type:", obj.type)
@@ -68,6 +68,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db1 = SQLAlchemy(app)
+
 
 class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -84,7 +88,20 @@ class Students(db.Model):
     past_books = db.Column(db.String(2500), nullable=True)
     volunteer_email = db.Column(db.String(250), nullable=False)
 
-# db.create_all()
+
+class Books(db1.Model):
+    id = db1.Column(db.Integer, primary_key=True)
+    isbn = db1.Column(db.String(250), nullable=True)
+    title = db1.Column(db.String(250), nullable=True)
+    genre = db1.Column(db.String(250), nullable=True)
+    level = db1.Column(db.String(250), nullable=True)
+    rating = db1.Column(db.String(250), nullable=True)
+    reads = db1.Column(db.String(250), nullable=True)
+    age_group = db1.Column(db.String(250), nullable=True)
+    image = db1.Column(db.String(250), nullable=True)
+
+
+db1.create_all()
 
 
 class Evaluation(db.Model):
@@ -201,7 +218,7 @@ def evaluate():
         global student_answer
         student_answer = evaluate_form.answer.data
         global ret
-        ret,lis=solve(student_answer, "Hardcoded text")
+        ret, lis = solve(student_answer, "Hardcoded text")
         name = evaluate_form.name.data
         grade = evaluate_form.grade.data
         level = evaluate_form.level.data
@@ -213,7 +230,7 @@ def evaluate():
         e = Evaluation()
         e.add_new(student_id, name, grade, level, subject, question, answer)
 
-        return render_template('test_result.html', result=ret,scores=lis)
+        return render_template('test_result.html', result=ret, scores=lis)
 
     return render_template('evaluate.html', form=evaluate_form)
 
@@ -300,6 +317,26 @@ def edit_student(index):
         return render_template('add_student.html', heading="Edit Student", form=edit_form)
 
 
+@app.route('/add-book/<int:data>', methods=["GET", "POST"])
+def add_book(data):
+    form = AddBook(isbn=data)
+    if form.validate_on_submit():
+        new_book = Books(
+            isbn=form.isbn.data,
+            title=form.title.data,
+            genre=form.genre.data,
+            level=form.level.data,
+            rating=form.rating.data,
+            reads=form.reads.data,
+            age_group=form.age_group.data,
+            image=form.image.data
+        )
+        db1.session.add(new_book)
+        db1.session.commit()
+        return redirect(url_for("books"))
+    return render_template("add-book.html", form=form, heading="Add Book")
+
+
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
 def individual_students(index):
     view_student = Students.query.get(index)
@@ -311,4 +348,3 @@ def individual_students(index):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
