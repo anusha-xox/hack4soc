@@ -24,6 +24,9 @@ Bootstrap(app)
 global type_barcode
 global data_barcode
 
+MY_EMAIL = "rahulanbalagan.cs20@rvce.edu.in"
+PASSWORD = "bhel@123"
+
 
 def draw_barcode(decoded, image):
     image = cv2.rectangle(image, (decoded.rect.left, decoded.rect.top),
@@ -65,14 +68,17 @@ def gen():
 
 #### DATABASE FOR STUDENTS ON SQLALCHEMY ####
 
+
+
+
+
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db1 = SQLAlchemy(app)
-
 
 class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -124,7 +130,6 @@ class Evaluation(db.Model):
 
         db.session.add(new_eval)
         db.session.commit()
-
 
 
 # class Progress(db.Model):
@@ -187,17 +192,20 @@ def books():
 
 @app.route('/level1')
 def level1():
-    return render_template('level1.html')
+    display_books = Books.query.filter_by(level=1)
+    return render_template('level1.html', books=display_books)
 
 
 @app.route('/level2')
 def level2():
-    return render_template('level2.html')
+    display_books = Books.query.filter_by(level=2)
+    return render_template('level2.html', books=display_books)
 
 
 @app.route('/level3')
 def level3():
-    return render_template('level3.html')
+    display_books = Books.query.filter_by(level=3)
+    return render_template('level3.html', books=display_books)
 
 
 @app.route('/view-students')
@@ -281,10 +289,11 @@ def add_student():
         return redirect(url_for('view_students'))
     return render_template('add_student.html', heading="Add Student", form=form)
 
+
 @app.route('/leaderboard')
 def leaderboard():
-    s=Students()
-    students_top=Students.query.all()
+    s = Students()
+    students_top = Students.query.all()
     return render_template('leaderboard.html', students_top=students_top)
 
 
@@ -352,10 +361,28 @@ def add_book(data):
 @app.route('/individual-student/<int:index>', methods=["GET", "POST"])
 def individual_students(index):
     view_student = Students.query.get(index)
+    def send_email():
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=MY_EMAIL, password=PASSWORD)
+            connection.sendmail(
+                from_addr=MY_EMAIL,
+                to_addrs=MY_EMAIL,
+                msg=f"BOOK OVERDUE!!\n\nName: {view_student.first_name}\nnMessage : BOOK IS OVERDUE! PLEASE lOOK INTO IT"
+            )
     if view_student:
+        send_email()
         return render_template("individual_student.html", student=view_student)
     else:
         return redirect(url_for('view_students'))
+
+@app.route('/book-details/<int:index>', methods=["GET", "POST"])
+def book_details(index):
+    get_book = Books.query.get(index)
+    if get_book:
+        return render_template("book_details.html", book=get_book)
+    else:
+        return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
